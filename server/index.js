@@ -1,15 +1,9 @@
 const express = require("express");
-const { createServer } = require("http");
-const { Server } = require("socket.io");
+const dbconnect = require('./config/db');
 
 const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer, { 
-    cors: { origin: 'http://localhost:3000', methods: ['GET', 'POST'] }
- });
 
-io.on("connection", (socket) => {
-  console.log("Connection Successful");
-});
-
-httpServer.listen(3000);
+app.listen(3000, ()=>{
+  console.log("Server started on PORT 3000");
+  dbconnect();
+})
