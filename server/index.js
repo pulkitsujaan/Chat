@@ -4,7 +4,9 @@ const { Server } = require("socket.io");
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer, { 
+    cors: { origin: 'http://localhost:3000', methods: ['GET', 'POST'] }
+ });
 
 io.on("connection", (socket) => {
   console.log("Connection Successful");
