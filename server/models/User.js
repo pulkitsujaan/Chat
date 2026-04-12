@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   messages:[{
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Message"
   }]
 
