@@ -2,22 +2,25 @@ const userRepository = require('../repositories/userRepository');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
 
-const register = async(username, email, password)=>{
-    try {
-        const email = await userRepository.findByEmail(email);
-        if(email)
-            throw new Error('User already exists');
-        const username = await userRepository.findByUsername(username);
-        if(username)
-            throw new Error('User already exists');
-
-        const hash = bcrypt.hashSync(password, 10);
-        const user = await userRepository.create({username, email, password:hash});
-        return user;
-    } catch (error) {
-        throw error;
+const register = async (username, email, password) => {
+    const existingEmail = await userRepository.findByEmail(email);
+    if (existingEmail) {
+        const err = new Error('Email already in use');
+        err.status = 409;
+        throw err;
     }
-}
+
+    const existingUsername = await userRepository.findByUsername(username);
+    if (existingUsername) {
+        const err = new Error('Username already taken');
+        err.status = 409;
+        throw err;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await userRepository.create({ username, email, password: hashedPassword });
+    return user;
+};
 
 const login = async(email, password)=>{
     try {

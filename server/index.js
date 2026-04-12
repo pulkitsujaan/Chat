@@ -11,7 +11,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",  // your React port
+        origin: "*",  // your React port
         methods: ["GET", "POST"]
     }
 });
@@ -19,7 +19,9 @@ const io = new Server(server, {
 
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(cors());
+app.use(cors({
+    origin:"*"
+}));
 
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
